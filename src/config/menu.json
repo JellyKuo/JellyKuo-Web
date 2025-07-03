@@ -1,0 +1,45 @@
+{
+  "main": [
+    {
+      "name": "Home",
+      "url": "/"
+    },
+    {
+      "name": "Profile",
+      "url": "/about"
+    },
+    {
+      "name": "On the Subject of",
+      "url": "/blog"
+    },
+    {
+      "name": "Toolbox",
+      "url": "/toolbox"
+    },
+    {
+      "name": "Pages",
+      "url": "",
+      "hasChildren": true,
+      "children": [
+        {
+          "name": "Contact",
+          "url": "/contact"
+        },
+        {
+          "name": "Authors",
+          "url": "/authors"
+        },
+        {
+          "name": "404 Page",
+          "url": "/404"
+        }
+      ]
+    }
+  ],
+  "footer": [
+    {
+      "name": "Credits and Attributions",
+      "url": "/credits"
+    }
+  ]
+}

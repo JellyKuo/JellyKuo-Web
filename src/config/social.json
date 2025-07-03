@@ -1,0 +1,24 @@
+{
+  "main": [
+    {
+      "name": "linkedin",
+      "icon": "FaLinkedin",
+      "link": "https://www.linkedin.com/in/nickkuo1/"
+    },
+    {
+      "name": "github",
+      "icon": "FaGithub",
+      "link": "https://www.github.com/JellyKuo/"
+    },
+    {
+      "name": "gitlab",
+      "icon": "FaGitlab",
+      "link": "https://gitlab.com/JellyKuo/"
+    },
+    {
+      "name": "facebook",
+      "icon": "FaFacebook",
+      "link": "https://www.facebook.com/JellyKuo/"
+    }
+  ]
+}
