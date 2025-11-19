@@ -12,6 +12,13 @@ jobs:
     steps:
       - name: Checkout your repository using git
         uses: actions/checkout@v5
+      - name: Enable Corepack
+        run: corepack enable
+      - name: Use Node.js 22 and Yarn
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'yarn'
       - name: Patch config
         run: |
           jq '.site.base_url = "${{ vars.BASE_URL }}" | .site.base_path = "${{ vars.BASE_PATH }}"' src/config/config.json > temp.json && \
