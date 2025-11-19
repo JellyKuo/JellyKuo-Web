@@ -4,7 +4,7 @@
   "description": "Nick's personal website",
   "author": "JellyKuo",
   "license": "MIT",
-  "packageManager": "yarn@1.22.22",
+  "packageManager": "yarn@4.11.0",
   "type": "module",
   "scripts": {
     "dev": "yarn generate-json && astro dev",
