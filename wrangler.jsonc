@@ -12,5 +12,24 @@
 	},
 	"observability": {
     "enabled": true
+  },
+  "vars": {
+    "NODE_ENV": "production"
+  },
+  "route": {
+    "pattern": "jellykuo.com/*",
+    "zone_name": "jellykuo.com"
+  },
+  "env": {
+    "staging": {
+      "name": "jellykuo-web-staging",
+      "vars": {
+        "NODE_ENV": "staging"
+      },
+      "route": {
+        "pattern": "staging.jellykuo.com/*",
+        "zone_name": "jellykuo.com"
+      }
+    }
   }
 }
