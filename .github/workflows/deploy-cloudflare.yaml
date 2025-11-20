@@ -2,7 +2,7 @@ name: Deploy to Cloudflare Workers
 
 on:
   push:
-    branches: [ main, develop, debug-action ]
+    branches: [ main, develop ]
   workflow_dispatch:
 
 jobs:
@@ -27,7 +27,7 @@ jobs:
           mv temp.json src/config/config.json && \
           cat src/config/config.json
       - name: Build site
-        uses: withastro/action@v5
+        run: yarn build
       - name: Copy Wrangler config
         run: cp wrangler.jsonc dist/wrangler.jsonc
       - name: Upload Artifact
@@ -57,5 +57,3 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: |
             deploy --config wrangler.jsonc --name "${{ vars.CLOUDFLARE_WORKER_NAME }}" --domain "${{ vars.CLOUDFLARE_WORKER_DOMAIN }}"
-
-
