@@ -4,7 +4,7 @@
   "description": "Nick's personal website",
   "author": "JellyKuo",
   "license": "MIT",
-  "packageManager": "yarn@1.22.22",
+  "packageManager": "yarn@4.11.0",
   "type": "module",
   "scripts": {
     "dev": "yarn generate-json && astro dev",
@@ -17,12 +17,13 @@
   },
   "dependencies": {
     "@astrojs/check": "0.9.5",
-    "@astrojs/mdx": "4.3.9",
-    "@astrojs/react": "4.4.1",
+    "@astrojs/cloudflare": "^12.6.11",
+    "@astrojs/mdx": "4.3.11",
+    "@astrojs/react": "4.4.2",
     "@astrojs/sitemap": "3.6.0",
     "@digi4care/astro-google-tagmanager": "^1.6.0",
     "@justinribeiro/lite-youtube": "^1.9.0",
-    "astro": "5.15.3",
+    "astro": "5.15.9",
     "astro-auto-import": "^0.4.5",
     "astro-font": "^1.1.0",
     "date-fns": "^4.1.0",
@@ -52,6 +53,7 @@
     "prettier-plugin-tailwindcss": "^0.7.1",
     "sharp": "0.34.4",
     "tailwindcss": "^4.1.16",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "wrangler": "^4.49.0"
   }
 }

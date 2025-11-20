@@ -1,0 +1,61 @@
+name: Deploy to Cloudflare Workers
+
+on:
+  push:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v5
+        with:
+          lfs: true
+      - name: Enable Corepack
+        run: corepack enable
+      - name: Use Node.js 22 and Yarn
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'yarn'
+      - name: Patch config
+        run: |
+          jq '.site.base_url = "${{ vars.BASE_URL }}" | .site.base_path = "${{ vars.BASE_PATH }}"' src/config/config.json > temp.json && \
+          mv temp.json src/config/config.json && \
+          cat src/config/config.json
+      - name: Yarn install
+        run: yarn install
+      - name: Build site
+        run: yarn build
+      - name: Copy Wrangler config
+        run: cp wrangler.jsonc dist/wrangler.jsonc
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          include-hidden-files: true
+          path: dist/
+  
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - name: Move Wrangler config
+        run: mv dist/wrangler.jsonc .
+      - name: Deploy Worker
+        uses: cloudflare/wrangler-action@v3
+        with:
+          wranglerVersion: "4.49.0"
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: |
+            deploy --config wrangler.jsonc --name "${{ vars.CLOUDFLARE_WORKER_NAME }}" --domain "${{ vars.CLOUDFLARE_WORKER_DOMAIN }}"

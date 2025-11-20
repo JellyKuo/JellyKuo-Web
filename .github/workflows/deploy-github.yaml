@@ -1,0 +1,46 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: github-pages
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v5
+        with:
+          lfs: true
+      - name: Enable Corepack
+        run: corepack enable
+      - name: Use Node.js 22 and Yarn
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'yarn'
+      - name: Patch config
+        run: |
+          jq '.site.base_url = "${{ vars.BASE_URL }}" | .site.base_path = "${{ vars.BASE_PATH }}"' src/config/config.json > temp.json && \
+          mv temp.json src/config/config.json && \
+          cat src/config/config.json
+      - name: Build site for Github Pages
+        uses: withastro/action@v5
+  
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
