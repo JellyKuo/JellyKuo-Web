@@ -1,6 +1,5 @@
 {
 	"main": "dist/_worker.js/index.js",
-	"name": "jellykuo-web",
   "compatibility_date": "2025-11-19",
   "compatibility_flags": [
     "nodejs_compat",
@@ -12,24 +11,5 @@
 	},
 	"observability": {
     "enabled": true
-  },
-  "vars": {
-    "NODE_ENV": "production"
-  },
-  "route": {
-    "pattern": "jellykuo.com/*",
-    "zone_name": "jellykuo.com"
-  },
-  "env": {
-    "staging": {
-      "name": "jellykuo-web-staging",
-      "vars": {
-        "NODE_ENV": "staging"
-      },
-      "route": {
-        "pattern": "staging.jellykuo.com/*",
-        "zone_name": "jellykuo.com"
-      }
-    }
   }
 }
