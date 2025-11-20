@@ -26,6 +26,8 @@ jobs:
           jq '.site.base_url = "${{ vars.BASE_URL }}" | .site.base_path = "${{ vars.BASE_PATH }}"' src/config/config.json > temp.json && \
           mv temp.json src/config/config.json && \
           cat src/config/config.json
+      - name: Yarn install
+        run: yarn install
       - name: Build site
         run: yarn build
       - name: Copy Wrangler config
