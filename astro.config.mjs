@@ -42,5 +42,7 @@ export default defineConfig({
     extendDefaultPlugins: true,
   },
 
-  adapter: cloudflare(),
+  adapter: cloudflare({
+    imageService: 'compile'
+  }),
 });
