@@ -23,6 +23,8 @@
     "@astrojs/sitemap": "^3.6.0",
     "@digi4care/astro-google-tagmanager": "^1.6.0",
     "@justinribeiro/lite-youtube": "^1.9.0",
+    "@sentry/astro": "^10.27.0",
+    "@sentry/profiling-node": "^10.27.0",
     "astro": "5.15.9",
     "astro-auto-import": "^0.4.5",
     "astro-font": "^1.1.0",

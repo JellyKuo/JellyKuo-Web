@@ -8,8 +8,8 @@ import remarkCollapse from "remark-collapse";
 import remarkToc from "remark-toc";
 import sharp from "sharp";
 import config from "./src/config/config.json";
-
 import cloudflare from "@astrojs/cloudflare";
+import sentry from "@sentry/astro";
 
 // https://astro.build/config
 export default defineConfig({
@@ -34,6 +34,11 @@ export default defineConfig({
       ],
     }),
     mdx(),
+    sentry({
+      project: config.sentry.project,
+      org: config.sentry.org,
+      authToken: config.sentry.auth_token,
+    })
   ],
 
   markdown: {

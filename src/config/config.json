@@ -1,6 +1,7 @@
 {
   "site": {
     "title": "Nick Kuo",
+    "environment": "staging",
     "base_url": "https://jellykuo.com",
     "base_path": "/",
     "trailing_slash": false,
@@ -42,6 +43,17 @@
   "google_tag_manager": {
     "enable": false,
     "gtm_id": "GTM-XXXXXX"
+  },
+
+  "sentry": {
+    "project": "jellykuo-web",
+    "org": "jellykuo",
+    "auth_token": "",
+    "dsn": "",
+    "traces_sample_rate": 0.1,
+    "replays_session_sample_rate": 0.1,
+    "replays_on_error_sample_rate": 1.0,
+    "profiles_sample_rate": 0.1
   },
 
   "share": {
