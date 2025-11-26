@@ -2544,17 +2544,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry-internal/node-cpu-profiler@npm:^2.2.0":
-  version: 2.2.0
-  resolution: "@sentry-internal/node-cpu-profiler@npm:2.2.0"
-  dependencies:
-    detect-libc: "npm:^2.0.3"
-    node-abi: "npm:^3.73.0"
-    node-gyp: "npm:latest"
-  checksum: 10c0/8b9d1a0e0db6a3b322370c018a02ec085807ee372cd01de83d077711a6f49c27e1291059b53d239ee00e8c35fff7feeb766b58dcba19a35ffcf5293bd4756672
-  languageName: node
-  linkType: hard
-
 "@sentry-internal/replay-canvas@npm:10.27.0":
   version: 10.27.0
   resolution: "@sentry-internal/replay-canvas@npm:10.27.0"
@@ -2803,19 +2792,6 @@ __metadata:
     "@opentelemetry/sdk-trace-base": ^1.30.1 || ^2.1.0 || ^2.2.0
     "@opentelemetry/semantic-conventions": ^1.37.0
   checksum: 10c0/da083071b1b13fddb562718236e8785ccf5df2d91004d117c683f70328264ad9be3e33012b6104fa7de2f9002de81d3380233d4c59027c8c8a9bd8e873a47d5d
-  languageName: node
-  linkType: hard
-
-"@sentry/profiling-node@npm:^10.27.0":
-  version: 10.27.0
-  resolution: "@sentry/profiling-node@npm:10.27.0"
-  dependencies:
-    "@sentry-internal/node-cpu-profiler": "npm:^2.2.0"
-    "@sentry/core": "npm:10.27.0"
-    "@sentry/node": "npm:10.27.0"
-  bin:
-    sentry-prune-profiler-binaries: scripts/prune-profiler-binaries.js
-  checksum: 10c0/e681b84f75b7fbd26f755b9f5a182d552bc9dd4c0a07dabd8e445b242c6243f0693373a7e763ad4c43d03ec79c2c1846347fcef782d15090a61fe0fd1935d8a8
   languageName: node
   linkType: hard
 
@@ -5690,7 +5666,6 @@ __metadata:
     "@digi4care/astro-google-tagmanager": "npm:^1.6.0"
     "@justinribeiro/lite-youtube": "npm:^1.9.0"
     "@sentry/astro": "npm:^10.27.0"
-    "@sentry/profiling-node": "npm:^10.27.0"
     "@tailwindcss/forms": "npm:^0.5.10"
     "@tailwindcss/typography": "npm:^0.5.19"
     "@tailwindcss/vite": "npm:^4.1.16"
@@ -7081,15 +7056,6 @@ __metadata:
   dependencies:
     "@types/nlcst": "npm:^2.0.0"
   checksum: 10c0/a192c8b3365a7c076812004e72ae5b4a1734e582be2a6f3c062f3beecf18868a9fe2d1bad870bfead320fb39830f2c4f3752e5ae6574c4e59157126fd1ddba70
-  languageName: node
-  linkType: hard
-
-"node-abi@npm:^3.73.0":
-  version: 3.85.0
-  resolution: "node-abi@npm:3.85.0"
-  dependencies:
-    semver: "npm:^7.3.5"
-  checksum: 10c0/d51b5718b6ebfcb23858e5429b74798c05fe3ab436d8afd8480b4809706bc53d6af3a60714ecc85e8c943f4e06e6378ca1935725c7611f3d1febdd3fc3bb5fe3
   languageName: node
   linkType: hard
 
