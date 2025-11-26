@@ -25,7 +25,7 @@ jobs:
           cache: 'yarn'
       - name: Patch config
         run: |
-          jq '.site.environment = ${{ vars.ENVIRONMENT }} | 
+          jq '.site.environment = "${{ vars.ENVIRONMENT }}" | 
           .site.base_url = "${{ vars.BASE_URL }}" | 
           .site.base_path = "${{ vars.BASE_PATH }}" | 
           .sentry.auth_token = "${{ secrets.SENTRY_AUTH_TOKEN }}" | 
