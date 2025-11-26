@@ -28,16 +28,16 @@ jobs:
           cache: 'yarn'
       - name: Patch config
         run: |
-          jq '.site.environment = ${{ vars.ENVIRONMENT }} | \
-          .site.base_url = "${{ vars.BASE_URL }}" | \
-          .site.base_path = "${{ vars.BASE_PATH }}" | \
-          .sentry.auth_token = "${{ secrets.SENTRY_AUTH_TOKEN }}" | \
-          .sentry.dsn = "${{ secrets.SENTRY_DSN }}" | \
-          .sentry.project = "${{ vars.SENTRY_PROJECT }}" | \
-          .sentry.org = "${{ vars.SENTRY_ORG }}" | \
-          .sentry.traces_sample_rate = ${{ vars.SENTRY_TRACES_SAMPLE_RATE }} | \
-          .sentry.replays_session_sample_rate = ${{ vars.SENTRY_REPLAYS_SESSION_SAMPLE_RATE }} | \
-          .sentry.profiles_sample_rate = ${{ vars.SENTRY_PROFILES_SAMPLE_RATE }} | \
+          jq '.site.environment = ${{ vars.ENVIRONMENT }} | 
+          .site.base_url = "${{ vars.BASE_URL }}" | 
+          .site.base_path = "${{ vars.BASE_PATH }}" | 
+          .sentry.auth_token = "${{ secrets.SENTRY_AUTH_TOKEN }}" | 
+          .sentry.dsn = "${{ secrets.SENTRY_DSN }}" | 
+          .sentry.project = "${{ vars.SENTRY_PROJECT }}" | 
+          .sentry.org = "${{ vars.SENTRY_ORG }}" | 
+          .sentry.traces_sample_rate = ${{ vars.SENTRY_TRACES_SAMPLE_RATE }} | 
+          .sentry.replays_session_sample_rate = ${{ vars.SENTRY_REPLAYS_SESSION_SAMPLE_RATE }} | 
+          .sentry.profiles_sample_rate = ${{ vars.SENTRY_PROFILES_SAMPLE_RATE }}
           ' src/config/config.json > temp.json && \
           mv temp.json src/config/config.json && \
           cat src/config/config.json
