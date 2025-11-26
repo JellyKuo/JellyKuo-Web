@@ -9,10 +9,10 @@ Sentry.init({
   integrations: [
     Sentry.browserTracingIntegration(),
     Sentry.replayIntegration(),
-    Sentry.feedbackIntegration({
+    config.sentry.feedback_integration ? Sentry.feedbackIntegration({
       // Additional SDK configuration goes in here, for example:
       colorScheme: "system",
-    }),
+    }) : null,
   ],
   // Enable logs to be sent to Sentry
   enableLogs: true,

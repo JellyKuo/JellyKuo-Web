@@ -34,7 +34,8 @@ jobs:
           .sentry.org = "${{ vars.SENTRY_ORG }}" | 
           .sentry.traces_sample_rate = ${{ vars.SENTRY_TRACES_SAMPLE_RATE }} | 
           .sentry.replays_session_sample_rate = ${{ vars.SENTRY_REPLAYS_SESSION_SAMPLE_RATE }} | 
-          .sentry.profiles_sample_rate = ${{ vars.SENTRY_PROFILES_SAMPLE_RATE }} 
+          .sentry.profiles_sample_rate = ${{ vars.SENTRY_PROFILES_SAMPLE_RATE }} |
+          .sentry.feedback_integration = ${{ vars.SENTRY_FEEDBACK_INTEGRATION }}
           ' src/config/config.json > temp.json && \
           mv temp.json src/config/config.json && \
           cat src/config/config.json
