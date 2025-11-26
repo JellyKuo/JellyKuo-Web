@@ -24,7 +24,7 @@ const image = await getImageImport(src);
 !image &&
   console.error(`\x1b[31mImage not found - ${src}.\x1b[0m Make sure the image is in the /public/images folder.`);
 
-const maxDimension = 1600;
+const maxDimension = 640;
 if(!width || !height) {
   // Calculate ideal width and height if not provided.
   if(image?.width && image?.height) {

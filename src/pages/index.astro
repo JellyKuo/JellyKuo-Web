@@ -14,7 +14,7 @@ const testimonial = await getListPage("testimonialSection", "testimonial");
 
 const { banner, features } = homepage.data;
 
-const images = await Promise.all([
+const images = [
   {
     src: '/images/ces2024-demo.jpg',
     alt: 'CES 2024 - Stable Diffusion on iGPU',
@@ -51,7 +51,7 @@ const images = await Promise.all([
     src: '/images/ws2022-competition3.jpg',
     alt: 'WorldSkills 2022 Goyang - IT Software Solutions for Business',
   }
-].sort(() => 0.5 - Math.random()));
+].sort(() => 0.5 - Math.random());
 ---
 
 <Base>
