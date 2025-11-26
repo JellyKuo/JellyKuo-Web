@@ -164,7 +164,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/sitemap@npm:3.6.0":
+"@astrojs/sitemap@npm:^3.6.0":
   version: 3.6.0
   resolution: "@astrojs/sitemap@npm:3.6.0"
   dependencies:
@@ -4794,7 +4794,7 @@ __metadata:
     "@astrojs/cloudflare": "npm:^12.6.11"
     "@astrojs/mdx": "npm:4.3.11"
     "@astrojs/react": "npm:4.4.2"
-    "@astrojs/sitemap": "npm:3.6.0"
+    "@astrojs/sitemap": "npm:^3.6.0"
     "@digi4care/astro-google-tagmanager": "npm:^1.6.0"
     "@justinribeiro/lite-youtube": "npm:^1.9.0"
     "@tailwindcss/forms": "npm:^0.5.10"

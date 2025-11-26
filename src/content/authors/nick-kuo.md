@@ -1,16 +1,24 @@
 ---
 title: Nick Kuo
-email: johndoe@email.com
+email: ""
 image: ""
-description: this is meta description
+description: Nick Kuo
 social:
-  - name: github
-    icon: FaGithub
-    link: https://github.com/JellyKuo
-
   - name: linkedin
     icon: FaLinkedin
-    link: https://linkedin.com
+    link: https://www.linkedin.com/in/nickkuo1/
+
+  - name: github
+    icon: FaGithub
+    link: https://www.github.com/JellyKuo/
+
+  - name: gitlab
+    icon: FaGitlab
+    link: https://gitlab.com/JellyKuo/
+
+  - name: facebook
+    icon: FaFacebook
+    link: https://www.facebook.com/JellyKuo/
 ---
 
 [🔗 See my profile page](/about)
