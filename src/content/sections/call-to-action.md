@@ -6,9 +6,9 @@ description: "I rarely contribute to open-source with my personal account, but w
 button:
   enable: true
   label: "GitHub"
-  link: "https://github.com/zeon-studio/astroplate"
+  link: "https://www.github.com/JellyKuo/"
 secondaryButton:
   enable: true
   label: "GitLab"
-  link: "https://github.com/zeon-studio/astroplate"
+  link: "https://gitlab.com/JellyKuo/"
 ---

@@ -3,7 +3,7 @@
 banner:
   title: "Hi there 👋 I'm Nick"
   content: ""
-  image: "/images/banner.png"
+  image: ""
   button:
     enable: false
     label: "Get Started For Free"

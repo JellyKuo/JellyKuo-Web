@@ -12,6 +12,9 @@ const { title, description, meta_title, image } = aboutIndex.data;
 if (aboutIndex.data.draft) {
   return Astro.redirect("/404");
 }
+
+const PDF_PATH = "/docs/Resume.pdf";
+const WORKER_PATH = "//unpkg.com/pdfjs-dist@4.0.269/build/pdf.worker.min.mjs";
 ---
 
 <Base

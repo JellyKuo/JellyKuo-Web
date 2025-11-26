@@ -164,7 +164,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/sitemap@npm:3.6.0":
+"@astrojs/sitemap@npm:^3.6.0":
   version: 3.6.0
   resolution: "@astrojs/sitemap@npm:3.6.0"
   dependencies:
@@ -4794,7 +4794,7 @@ __metadata:
     "@astrojs/cloudflare": "npm:^12.6.11"
     "@astrojs/mdx": "npm:4.3.11"
     "@astrojs/react": "npm:4.4.2"
-    "@astrojs/sitemap": "npm:3.6.0"
+    "@astrojs/sitemap": "npm:^3.6.0"
     "@digi4care/astro-google-tagmanager": "npm:^1.6.0"
     "@justinribeiro/lite-youtube": "npm:^1.9.0"
     "@tailwindcss/forms": "npm:^0.5.10"
@@ -4811,6 +4811,7 @@ __metadata:
     eslint: "npm:^9.39.1"
     github-slugger: "npm:^2.0.0"
     gray-matter: "npm:^4.0.3"
+    lightgallery: "npm:^2.9.0"
     marked: "npm:^16.4.1"
     prettier: "npm:^3.6.2"
     prettier-plugin-astro: "npm:^0.14.1"
@@ -4966,6 +4967,13 @@ __metadata:
     prelude-ls: "npm:^1.2.1"
     type-check: "npm:~0.4.0"
   checksum: 10c0/effb03cad7c89dfa5bd4f6989364bfc79994c2042ec5966cb9b95990e2edee5cd8969ddf42616a0373ac49fac1403437deaf6e9050fbbaa3546093a59b9ac94e
+  languageName: node
+  linkType: hard
+
+"lightgallery@npm:^2.9.0":
+  version: 2.9.0
+  resolution: "lightgallery@npm:2.9.0"
+  checksum: 10c0/4af068718f937128d517fb9eb637def578351297bd17cdb12b38f941c1a5b0b302e1b8ac4f3cff24ad4a81c00904db2648084dac7984bd38c05ea3bfab3ef248
   languageName: node
   linkType: hard
 
