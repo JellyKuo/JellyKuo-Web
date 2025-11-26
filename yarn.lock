@@ -2488,15 +2488,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/image-size@npm:^0.8.0":
-  version: 0.8.0
-  resolution: "@types/image-size@npm:0.8.0"
-  dependencies:
-    image-size: "npm:*"
-  checksum: 10c0/b381b01144140539ef5985fbe3ea2de38829995aea44a1f7a3ff4313e4b5d1bda65a8bcc7e0cb097ec53eb27d418d39a292140065704cafb83cd0cd5e8246cce
-  languageName: node
-  linkType: hard
-
 "@types/json-schema@npm:^7.0.15":
   version: 7.0.15
   resolution: "@types/json-schema@npm:7.0.15"
@@ -4616,15 +4607,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"image-size@npm:*, image-size@npm:^2.0.2":
-  version: 2.0.2
-  resolution: "image-size@npm:2.0.2"
-  bin:
-    image-size: bin/image-size.js
-  checksum: 10c0/f09dd0f7cf8511cd20e4f756bdb5a7cb6d2240de3323f41bde266bed8373392a293892bf12e907e2995f52833fd88dd27cf6b1a52ab93968afc716cb78cd7b79
-  languageName: node
-  linkType: hard
-
 "import-fresh@npm:^3.2.1":
   version: 3.3.1
   resolution: "import-fresh@npm:3.3.1"
@@ -4818,7 +4800,6 @@ __metadata:
     "@tailwindcss/forms": "npm:^0.5.10"
     "@tailwindcss/typography": "npm:^0.5.19"
     "@tailwindcss/vite": "npm:^4.1.16"
-    "@types/image-size": "npm:^0.8.0"
     "@types/node": "npm:24.10.0"
     "@types/react": "npm:19.2.2"
     "@types/react-dom": "npm:19.2.2"
@@ -4830,7 +4811,6 @@ __metadata:
     eslint: "npm:^9.39.1"
     github-slugger: "npm:^2.0.0"
     gray-matter: "npm:^4.0.3"
-    image-size: "npm:^2.0.2"
     lightgallery: "npm:^2.9.0"
     marked: "npm:^16.4.1"
     prettier: "npm:^3.6.2"

@@ -2,46 +2,60 @@
 import "lightgallery/css/lightgallery.css";
 import "lightgallery/css/lg-zoom.css";
 import "lightgallery/css/lg-thumbnail.css";
+import ImageMod from "./ImageMod.astro";
+import { getImageImport } from "@/lib/utils/imageUtils";
 
 /**
  * Define the structure for the image data passed via props.
  * The 'size' property is critical for smooth lightbox transitions.
  */
-interface Image {
+interface GalleryImage {
   src: string;
-  thumb?: string; // Optional: use 'src' if no dedicated thumbnail exists
   alt: string;
-  size?: string;  // Format: "width-height" (e.g., "1024-768")
+  width?: number;
+  height?: number;
+  lgSize?: string;
 }
 
 interface Props {
   id: string; // Unique ID for this specific gallery instance
-  images: Image[];
+  images: GalleryImage[];
 }
 
 const { id, images } = Astro.props;
 ---
 
 <div id={id} class="gallery-container">
-  {images.map((img) => (
-    // The anchor tag is the item that gets tiled in the Masonry layout
-    <a 
-      href={img.src} 
-      data-lg-size={img.size}
-      class="gallery-item"
-    >
-      <img src={img.thumb || img.src} alt={img.alt} loading="lazy" />
-    </a>
-  ))}
+  {
+    images.map(async (img) => {
+      if (!img.lgSize) {
+        const image = await getImageImport(img.src);
+        if (image) {
+          img.lgSize = `${image.width}-${image.height}`;
+        }
+      }
+      return (
+        // The anchor tag is the item that gets tiled in the Masonry layout
+        <a href={img.src} data-lg-size={img.lgSize} class="gallery-item">
+          <ImageMod
+            src={img.src}
+            alt={img.alt}
+            width={img.width}
+            height={img.height}
+          />
+        </a>
+      );
+    })
+  }
 </div>
 
 <style>
   /* --- MASONRY LAYOUT CSS (Pure Columns) --- */
   .gallery-container {
-    column-count: 5; 
+    column-count: 4;
     column-gap: 2rem;
     width: 100%;
-    margin-bottom: 1rem; /* Add space below the gallery */
+    margin-bottom: 2rem; /* Add space below the gallery */
   }
 
   /* Responsive Adjustments */
@@ -59,35 +73,25 @@ const { id, images } = Astro.props;
   /* CRITICAL: Styles for the tiled items */
   .gallery-item {
     /* Prevents the block from being cut across columns */
-    break-inside: avoid; 
-    
-    margin-bottom: 1rem; 
+    break-inside: avoid;
+
+    margin-bottom: 2rem;
     display: block;
     border-radius: 8px;
     overflow: hidden;
-    transition: box-shadow 0.5s;
+    transition: box-shadow 0.25s;
   }
 
   .gallery-item:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   }
 
-  .gallery-item img {
-    width: 100%;
-    height: auto; 
-    display: block; 
-    transition: transform 0.3s;
-  }
-
-  .gallery-item:hover img {
-    transform: scale(1.02);
-  } 
 </style>
 
 <script>
-  import lightGallery from 'lightgallery';
-  import lgThumbnail from 'lightgallery/plugins/thumbnail';
-  import lgZoom from 'lightgallery/plugins/zoom';
+  import lightGallery from "lightgallery";
+  import lgThumbnail from "lightgallery/plugins/thumbnail";
+  import lgZoom from "lightgallery/plugins/zoom";
 
   /**
    * Initializes lightGallery on a single element.
@@ -95,14 +99,14 @@ const { id, images } = Astro.props;
    */
   const initSingleGallery = (el: HTMLElement) => {
     // Only initialize if the element exists and hasn't been initialized yet
-    if (el && !el.classList.contains('lg-on')) { 
+    if (el && !el.classList.contains("lg-on")) {
       lightGallery(el, {
         plugins: [lgThumbnail, lgZoom],
-        selector: '.gallery-item', // Targets the anchor tags we defined
+        selector: ".gallery-item", // Targets the anchor tags we defined
         speed: 500,
         // Add any other lightGallery options here
       });
-      el.classList.add('lg-on'); // Mark as initialized
+      el.classList.add("lg-on"); // Mark as initialized
     }
   };
 
@@ -113,8 +117,9 @@ const { id, images } = Astro.props;
   const initializeAllGalleries = () => {
     // Selects ALL elements using the specific class for this component
     // If you embed this component multiple times, this ensures all are initialized.
-    const galleryContainers = document.querySelectorAll<HTMLElement>('.gallery-container');
-    
+    const galleryContainers =
+      document.querySelectorAll<HTMLElement>(".gallery-container");
+
     galleryContainers.forEach(initSingleGallery);
   };
 
@@ -122,5 +127,5 @@ const { id, images } = Astro.props;
   initializeAllGalleries();
 
   // 2. Run after every View Transition navigation (if enabled)
-  document.addEventListener('astro:page-load', initializeAllGalleries);
+  document.addEventListener("astro:page-load", initializeAllGalleries);
 </script>
