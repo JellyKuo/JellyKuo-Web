@@ -1,5 +1,5 @@
 ---
-title: "WDF"
+title: "When entering S3/S4, GFX receives D0 request "
 meta_title: ""
 description: ""
 date: 2025-05-26T12:00:00Z
