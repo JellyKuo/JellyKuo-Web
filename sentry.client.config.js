@@ -2,17 +2,16 @@ import * as Sentry from "@sentry/astro";
 import config from "./src/config/config.json";
 
 Sentry.init({
-  dsn: config.sentry.dsn,
+  dsn: import.meta.env.PUBLIC_SENTRY_DSN || config.sentry.dsn,
   // Adds request headers and IP for users, for more info visit:
   // https://docs.sentry.io/platforms/javascript/guides/astro/configuration/options/#sendDefaultPii
   sendDefaultPii: true,
   integrations: [
     Sentry.browserTracingIntegration(),
     Sentry.replayIntegration(),
-    config.sentry.feedback_integration ? Sentry.feedbackIntegration({
-      // Additional SDK configuration goes in here, for example:
-      colorScheme: "system",
-    }) : null,
+    ...(config.sentry.feedback_integration
+      ? [Sentry.feedbackIntegration({ colorScheme: "system" })]
+      : []),
   ],
   // Enable logs to be sent to Sentry
   enableLogs: true,
@@ -25,5 +24,6 @@ Sentry.init({
   // If the entire session is not sampled, use the below sample rate to sample
   // sessions when an error occurs.
   replaysOnErrorSampleRate: config.sentry.replays_on_error_sample_rate,
-  environment: config.site.environment
+  environment:
+    import.meta.env.PUBLIC_SENTRY_ENVIRONMENT || config.site.environment,
 });

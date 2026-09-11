@@ -1,12 +1,12 @@
-import searchData from ".json/search.json";
-import React, { useEffect, useState } from "react";
+import searchData from "../../../.json/search.json";
+import React, { type ChangeEvent, useEffect, useState } from "react";
 import SearchResult, { type ISearchItem } from "./SearchResult";
 
 const SearchModal = () => {
   const [searchString, setSearchString] = useState("");
 
   // handle input change
-  const handleSearch = (e: React.FormEvent<HTMLInputElement>) => {
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchString(e.currentTarget.value.replace("\\", "").toLowerCase());
   };
 
@@ -129,7 +129,7 @@ const SearchModal = () => {
         <div className="search-wrapper-header">
           <label
             htmlFor="searchInput"
-            className="absolute left-7 top-[calc(50%-7px)]"
+            className="absolute top-[calc(50%-7px)] left-7"
           >
             <span className="sr-only">search icon</span>
             {searchString ? (
@@ -138,7 +138,7 @@ const SearchModal = () => {
                 viewBox="0 0 512 512"
                 height="18"
                 width="18"
-                className="hover:text-red-500 cursor-pointer -mt-0.5"
+                className="-mt-0.5 cursor-pointer hover:text-red-500"
               >
                 <title>close icon</title>
                 <path

@@ -5,6 +5,7 @@ dist/
 
 # dependencies
 node_modules/
+*.tsbuildinfo
 .pnp.*
 .yarn/*
 !.yarn/patches
@@ -28,6 +29,7 @@ package-lock.json
 
 # ignore .astro directory
 .astro
+.wrangler/
 
 # ide
 .idea/

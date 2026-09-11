@@ -4,18 +4,6 @@ meta_title: ""
 description: ""
 draft: false
 ---
-# This Website
-Source code is available on GitHub: [JellyKuo/JellyKuo-Web](https://github.com/jellykuo/jellykuo-web)
-
-The site is configured wit CI/CD pipeline using GitHub Actions, wit different target for branches:
-* `main` branch: Production
-  * By default, production is hosted on [Cloudflare Workers](https://workers.cloudflare.com/)
-  * Available at [nickkuo.dev](https://nickkuo.dev)
-  * Alternatively, the production site is also available via GitHub Pages: [gh.nickkuo.dev](https://gh.nickkuo.dev)
-* `develop` branch: Staging
-  * Staging is hosted on [Cloudflare Workers](https://workers.cloudflare.com/)
-  * Available at [staging.nickkuo.dev](https://staging.nickkuo.dev)
-
 # IP Checker
 A simple IP checker service is available at [ip.jellykuo.com](https://ip.jellykuo.com), which shows your public IP address and some additional information.
 * Hosted on Cloudflare Workers
@@ -31,6 +19,18 @@ A simple IP checker service is available at [ip.jellykuo.com](https://ip.jellyku
   * `/<Any present header>`: Return plain text of the specified header.
 
 <iframe src="https://ip.jellykuo.com" style="width: 100%; height: 180px; border: none;"></iframe>
+
+# This Website
+Source code is available on GitHub: [JellyKuo/JellyKuo-Web](https://github.com/jellykuo/jellykuo-web)
+
+The site is configured wit CI/CD pipeline using GitHub Actions, wit different target for branches:
+* `main` branch: Production
+  * By default, production is hosted on [Cloudflare Workers](https://workers.cloudflare.com/)
+  * Available at [nickkuo.dev](https://nickkuo.dev)
+  * Alternatively, the production site is also available via GitHub Pages: [gh.nickkuo.dev](https://gh.nickkuo.dev)
+* `develop` branch: Staging
+  * Staging is hosted on [Cloudflare Workers](https://workers.cloudflare.com/)
+  * Available at [staging.nickkuo.dev](https://staging.nickkuo.dev)
 
 # AltRepo
 A simple, self-hosted AltStore repository service capable of aggregating multiple AltStore repositories into one.
