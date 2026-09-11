@@ -88,7 +88,13 @@ export default defineConfig({
         [remarkCollapse, { test: "Table of contents" }],
       ],
     }),
-    shikiConfig: { theme: "one-dark-pro", wrap: true },
+    shikiConfig: {
+      themes: {
+        light: "github-light",
+        dark: "one-dark-pro",
+      },
+      wrap: true,
+    },
     extendDefaultPlugins: true,
   },
 
