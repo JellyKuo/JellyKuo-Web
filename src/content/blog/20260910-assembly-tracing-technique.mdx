@@ -60,7 +60,7 @@ I think AT&T syntax should burn in hell. Nobody should use this.
 Intel and AMD, the makers of x86 chips, use Intel syntax in their manuals & tools. Why are we using something invented by a phone company instead of the one from the original chipmakers?
 </Notice>
 
-```asm
+```
 0000000000401126 <fun>:
   401126:  b9 00 00 00 00        mov    $0x0,%ecx
   40112b:  ba 00 00 00 00        mov    $0x0,%edx
@@ -207,12 +207,12 @@ For `F`:
 F:
   401144:  89 c8                 mov    %ecx,%eax
 ```
-```
+```c
 F:
    eax = ecx;
 ```
 Notice how we're assigning `eax`, which is used by the inner loop in `C`. We could rewrite this as the initialization for the inner loop:
-```
+```c
 E:
    while(ecx < edi) {
       for(eax = ecx; eax < esi; eax++) {
@@ -228,7 +228,7 @@ D:
   40113d:  83 c1 01              add    $0x1,%ecx
 ```
 This modifies `ecx`, which is the condition in `E`. The outer loop can be expressed as a for loop as well.
-```
+```c
 E:
    for(...; ecx < edi; ecx++) {
       for(eax = ecx; eax < esi; eax++) {
