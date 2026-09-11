@@ -1,7 +1,7 @@
 ---
 import ImageMod from "@/components/ImageMod.astro";
 import Base from "@/layouts/Base.astro";
-import { getListPage } from "@/lib/contentParser.astro";
+import { buildDrafts, getListPage } from "@/lib/contentParser.astro";
 import { markdownify } from "@/lib/utils/textConverter";
 import { render } from "astro:content";
 
@@ -9,12 +9,9 @@ const aboutIndex = await getListPage("about", "-index");
 const { Content } = await render(aboutIndex);
 const { title, description, meta_title, image } = aboutIndex.data;
 
-if (aboutIndex.data.draft) {
+if (!buildDrafts && aboutIndex.data.draft) {
   return Astro.redirect("/404");
 }
-
-const PDF_PATH = "/docs/Resume.pdf";
-const WORKER_PATH = "//unpkg.com/pdfjs-dist@4.0.269/build/pdf.worker.min.mjs";
 ---
 
 <Base

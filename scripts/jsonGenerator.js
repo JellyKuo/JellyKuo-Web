@@ -5,6 +5,9 @@ import matter from "gray-matter";
 const CONTENT_DEPTH = 2;
 const JSON_FOLDER = "./.json";
 const BLOG_FOLDER = "src/content/blog";
+const buildDrafts = process.argv.includes("--buildDrafts");
+const buildFuture = process.argv.includes("--buildFuture");
+const now = new Date();
 
 // get data from markdown
 const getData = (folder, groupDepth) => {
@@ -41,7 +44,20 @@ const getData = (folder, groupDepth) => {
     }
   });
 
-  return getPaths.filter((page) => !page.frontmatter?.draft && page);
+  return getPaths.filter((page) => {
+    if (!page || (!buildDrafts && page.frontmatter?.draft)) {
+      return false;
+    }
+
+    if (!buildFuture && page.frontmatter?.date) {
+      const pageDate = new Date(page.frontmatter.date);
+      if (!Number.isNaN(pageDate.valueOf()) && pageDate > now) {
+        return false;
+      }
+    }
+
+    return true;
+  });
 };
 
 try {
