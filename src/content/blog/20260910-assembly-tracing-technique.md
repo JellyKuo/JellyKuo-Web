@@ -51,11 +51,13 @@ The overall flow looks like this:
 6. GOTO step 4 until finished.
 
 I will walk through the process with an example. Below is the assembly we're working with today:
+
 <Notice type="info">
 Since this is intended for fellow ICS students, I will use something that looks like AT&T syntax.
 
 I think AT&T syntax should burn in hell. Nobody should use this. Intel and AMD, the makers of x86 chips, use Intel syntax in their manuals & tools. Why are we using something invented by a phone company instead of the one from the original chipmakers?
 </Notice>
+
 ```asm
 0000000000401126 <fun>:
   401126:  b9 00 00 00 00        mov    $0x0,%ecx
