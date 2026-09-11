@@ -1,14 +1,14 @@
 ---
 import config from "@/config/config.json";
 import Base from "@/layouts/Base.astro";
-import { getListPage } from "@/lib/contentParser.astro";
+import { buildDrafts, getListPage } from "@/lib/contentParser.astro";
 import PageHeader from "@/partials/PageHeader.astro";
 
 const contactIndex = await getListPage("contact", "-index");
 const { contact_form_action }: { contact_form_action: string } = config.params;
 const { title, description, meta_title, image } = contactIndex.data;
 
-if (contactIndex.data.draft) {
+if (!buildDrafts && contactIndex.data.draft) {
   return Astro.redirect("/404");
 }
 ---

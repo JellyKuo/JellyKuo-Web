@@ -6,7 +6,8 @@ const commonFields = {
   title: z.string(),
   description: z.string(),
   meta_title: z.string().optional(),
-  date: z.date().optional(),
+  // Accept both Date objects and ISO date strings from frontmatter.
+  date: z.coerce.date().optional(),
   image: z.string().optional(),
   draft: z.boolean(),
 };
@@ -18,11 +19,12 @@ const blogCollection = defineCollection({
     title: z.string(),
     meta_title: z.string().optional(),
     description: z.string().optional(),
-    date: z.date().optional(),
+    date: z.coerce.date().optional(),
     image: z.string().optional(),
     author: z.string().default("Admin"),
-    categories: z.array(z.string()).default(["others"]),
-    tags: z.array(z.string()).default(["others"]),
+    // Factory defaults avoid sharing mutable arrays between entries.
+    categories: z.array(z.string()).default(() => ["others"]),
+    tags: z.array(z.string()).default(() => ["others"]),
     draft: z.boolean().optional(),
   }),
 });

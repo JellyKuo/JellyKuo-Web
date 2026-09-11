@@ -1,132 +1,52 @@
-<h1 align=center>Astro + Tailwind CSS + TypeScript Starter and Boilerplate</h1>
+# JellyKuo-Web
 
-<p align=center>Astroplate is a free starter template built with Astro, TailwindCSS & TypeScript, providing everything you need to jumpstart your Astro project and save valuable time.</p>
+Source for [jellykuo.com](https://jellykuo.com), built with Astro 7, Tailwind CSS 4, TypeScript, React islands, Cloudflare Workers, and Sentry.
 
-<p align=center>Made with ♥ by <a href="https://zeon.studio/">Zeon Studio</a></p>
+The project originated from [Astroplate](https://github.com/zeon-studio/astroplate) and now carries substantial local customization. See [ASTROPLATE.md](ASTROPLATE.md) before porting upstream changes.
 
-<p align=center> If you find this project useful, please give it a ⭐ to show your support. </p>
+## Requirements
 
-<h2 align="center"> <a target="_blank" href="https://astroplate.netlify.app/" rel="nofollow">👀 Demo</a> | <a target="_blank" href="https://astroplate-multilang.netlify.app/" rel="nofollow">👀 Demo Multilang</a> | <a  target="_blank" href="https://pagespeed.web.dev/analysis/https-astroplate-netlify-app/yzx3foum3w?form_factor=desktop">Page Speed (100%)🚀</a>
-</h2>
+- Node.js 22 or newer
+- Corepack
+- Yarn 4.11.0, selected by the `packageManager` field
 
-<p align=center>
-  <a href="https://github.com/withastro/astro/releases/tag/astro%405.15.3">
-    <img src="https://img.shields.io/static/v1?label=ASTRO&message=5.15&color=000&logo=astro"  alt="Astro Version 5.15"/>
-  </a>
+## Commands
 
-  <a href="https://github.com/zeon-studio/astroplate/blob/main/LICENSE">
-    <img src="https://img.shields.io/github/license/zeon-studio/astroplate" alt="license"></a>
-
-  <img src="https://img.shields.io/github/languages/code-size/zeon-studio/astroplate" alt="code size">
-
-  <a href="https://github.com/zeon-studio/astroplate/graphs/contributors">
-    <img src="https://img.shields.io/github/contributors/zeon-studio/astroplate" alt="contributors"></a>
-</p>
-
-## 📌 Key Features
-
-- 👥 Multi-Authors
-- 🌐 Multilingual
-- 🎯 Similar Posts Suggestion
-- 🔍 Search Functionality
-- 🌑 Dark Mode
-- 🏷️ Tags & Categories
-- 🔗 Netlify setting pre-configured
-- 📞 Support contact form
-- 📱 Fully responsive
-- 📝 Write and update content in Markdown / MDX
-- 📎 Google Tag Manager
-- 💬 Disqus Comment
-- 🔳 Syntax Highlighting
-
-### 📄 15+ Pre-designed Pages
-
-- 🏠 Homepage
-- 👤 About
-- 📞 Contact
-- 👥 Authors
-- 👤 Author Single
-- 📝 Blog
-- 📝 Blog Single
-- 🚫 Custom 404
-- 💡 Elements
-- 📄 Privacy Policy
-- 🏷️ Tags
-- 🏷️ Tag Single
-- 🗂️ Categories
-- 🗂️ Category Single
-- 🔍 Search
-
-## 🔗 Integrations
-
-- astro/react
-- astro/sitemap
-- astro/tailwind
-
-## 🚀 Getting Started
-
-### 📦 Dependencies
-
-- astro v5.15+
-- node v20.10+
-- yarn v1.22+
-- tailwind v4+
-
-### 👉 Install Dependencies
-
-```bash
-yarn install
+```sh
+corepack enable
+yarn install --immutable
+yarn dev
+yarn check
+yarn build
 ```
 
-### 👉 Development Command
+`yarn dev` watches the theme source, generates the search index, and starts Astro. `yarn build` generates the theme and search data, builds the site, and produces LLM-friendly artifacts.
 
-```bash
-yarn run dev
+## Content Visibility
+
+Normal builds exclude draft and future-dated content. Build-time overrides use Astroplate-compatible names:
+
+```sh
+yarn build -- --buildDrafts
+yarn build -- --buildFuture
+yarn build -- --buildDrafts --buildFuture
 ```
 
-### 👉 Build Command
+The selected mode applies consistently to routes, pagination, taxonomies, search data, and LLM artifacts.
 
-```bash
-yarn run build
-```
+## Generated Files
 
-### 👉 Build and Run With Docker
+- `src/styles/generated-theme.css` is generated from `src/config/theme.json` by `yarn generate-theme` and is committed.
+- `.json/search.json` is generated from content by `yarn generate-json` and is ignored.
+- `dist/client/llms.txt`, `llms-full.txt`, and per-route Markdown are generated after a production build and are ignored with `dist/`.
+- LLM generation is configured under `llms` in `src/config/config.json`.
 
-```bash
-docker build -t astroplate .
-# or
-# docker --build-arg INSTALLER=npm build -t astroplate .
-# or
-# docker --build-arg INSTALLER=pnpm build -t astroplate .
+Do not edit generated files directly. Change their source configuration or content instead.
 
-docker run -p 3000:80 astroplate
-# or
-# docker run --rm -p 3000:80 astroplate
-```
+## Deployment
 
-To access the shell within the container:
+GitHub Actions contains separate GitHub Pages and Cloudflare Workers workflows. The Cloudflare workflow patches environment-specific site and Sentry settings before building. Preserve those steps when changing build or deployment configuration.
 
-```bash
-docker run -it --rm astroplate ash
-```
+## License and Attribution
 
-<!-- reporting issue -->
-
-## 🐞 Reporting Issues
-
-We use GitHub Issues as the official bug tracker for this Template. Please Search [existing issues](https://github.com/zeon-studio/astroplate/issues). It’s possible someone has already reported the same problem.
-If your problem or idea has not been addressed yet, feel free to [open a new issue](https://github.com/zeon-studio/astroplate/issues).
-
-<!-- licence -->
-
-## 📝 License
-
-Copyright (c) 2023 - Present, Designed & Developed by [Zeon Studio](https://zeon.studio/)
-
-**Code License:** Released under the [MIT](https://github.com/zeon-studio/astroplate/blob/main/LICENSE) license.
-
-**Image license:** The images are only for demonstration purposes. They have their license, we don't have permission to share those images.
-
-## 💻 Need Custom Development Services?
-
-If you need a custom theme, theme customization, or complete website development services from scratch you can [Hire Us](https://zeon.studio/).
+The code is released under the [MIT License](LICENSE). The original Astroplate template was designed and developed by [Zeon Studio](https://zeon.studio/). Site content and images may have separate ownership or licensing terms.

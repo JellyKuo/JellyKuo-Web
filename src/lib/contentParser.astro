@@ -10,32 +10,50 @@ type PageData = {
   title: string;
   meta_title?: string;
   description?: string;
+  date?: Date;
   image?: string;
   draft?: boolean;
 };
 
+export const buildDrafts =
+  import.meta.env.ASTRO_BUILD_DRAFTS === "true" ||
+  process.argv.includes("--buildDrafts");
+export const buildFuture =
+  import.meta.env.ASTRO_BUILD_FUTURE === "true" ||
+  process.argv.includes("--buildFuture");
+
 export const getSinglePage = async <C extends CollectionKey>(
-  collectionName: C
+  collectionName: C,
 ): Promise<CollectionEntry<C>[]> => {
-  const allPages = await getCollection(
-    collectionName,
-    ({ data, id }) => !(data as PageData)?.draft && !id.startsWith("-")
-  );
+  const now = new Date();
+  const allPages = await getCollection(collectionName, ({ data, id }) => {
+    const pageData = data as PageData;
+
+    if (!buildDrafts && pageData.draft) {
+      return false;
+    }
+
+    if (!buildFuture && pageData.date && pageData.date > now) {
+      return false;
+    }
+
+    return !id.startsWith("-");
+  });
   return allPages;
 };
 
 export const getListPage = async <C extends CollectionKey>(
   collectionName: C,
-  documentId: "-index" | string
+  documentId: "-index" | string,
 ): Promise<CollectionEntry<C>> => {
   const data = (await getEntry(
     collectionName,
-    documentId
+    documentId,
   )) as CollectionEntry<C> | null;
 
   if (!data) {
     throw new Error(
-      `No page found for the collection: ${collectionName} with filename: ${documentId}`
+      `No page found for the collection: ${collectionName} with filename: ${documentId}`,
     );
   }
 
