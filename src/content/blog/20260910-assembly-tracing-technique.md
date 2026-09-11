@@ -1,0 +1,268 @@
+---
+title: "Assembly Tracing Technique"
+meta_title: ""
+description: ""
+date: 2026-09-10T12:00:00Z
+image: ""
+categories: ["CMU"]
+author: "Nick Kuo"
+tags: ["CMU", "Programming"]
+draft: false
+---
+Upon joining CMU, the famous 15-503 ICS course (and the plethora of other course code) will certainly challenge anyone who is not familiar with reading assembly. Yet I believe the capability to reason at the assembly level is an important skill for software engineers.
+
+I recall that throughout the course, we were taught the fundamentals of how x64 works and what AT&T ASM syntax looks like. But there was no discussion on how to efficiently and correctly translate assembly into something humans could understand, yet these questions kept popping up in quizzes, assignments and exams. (Or maybe I just didn't pay attention in class ¯\\\_(ツ)_/¯ )
+
+The keyword here is "efficiently": Given the knowledge taught about assembly AND enough time, anyone can figure out what a piece of assembly is doing. However, without a systematic approach to the problem, as soon as the assembly gets long / loopy / jumpy / recursive, we become much more prone to errors.
+
+If you read through the other blog posts here, you'd realize I always share assembly snippets in colorful graphs like this:
+
+![](/images/blog/20260910-assembly-tracing-technique/1.png)
+
+That's because this is a format I found to be very easy to comprehend, and it provides a "bird's eye" view of the overall structure of the program.
+
+When I approach these types of questions by hand (which only happens in courses, obviously), I have found that the same approach works reasonably well, doesn't take very long, and reduces the chances of mistakes creeping in.
+
+### TLDR: Course ask "what dis asm do?" -> You draw
+
+# Concepts
+
+In order to understand the steps, some background info:
+* Basic Block: A **sequential** list of assembly instructions that has no branches and gets executed as a whole.
+   * A basic block can have any length > 0.
+   * It can only contain a branching instruction at the end; `jXX` and `ret` are considered "branching instructions".
+  * There can be 0 or 1 branching instruction.
+   * Think of this as a bunch of instructions bundled together: execution will start from the beginning of the block and always travel to the end.
+* Control Flow Graph (CFG): This is the key part we need to build; it is a directed graph describing the flow of program execution.
+    * A CFG is made out of basic blocks, edges (branch or fall-through), a single entry, and 1 or more exits.
+
+# Process
+Now that we have our vocabulary, it's time to start processing this :)
+The overall flow looks like this:
+1. Compute branches
+2. Construct basic blocks
+   * At this point you'd have all the basic blocks for your program.
+3. Connect blocks
+   * At this point you'd have a CFG.
+   * You'd be able to reason about the overall structure of the program here.
+   * If you have practiced enough & the data flow is not very complex, chances are you can stop here.
+4. Identify region of interest, reconstruct substructure data flow.
+5. Combine substructures.
+6. GOTO step 4 until finished.
+
+I will walk through the process with an example. Below is the assembly we're working with today:
+<Notice type="info">
+Since this is intended for fellow ICS students, I will use something that looks like AT&T syntax.
+
+I think AT&T syntax should burn in hell. Nobody should use this. Intel and AMD, the makers of x86 chips, use Intel syntax in their manuals & tools. Why are we using something invented by a phone company instead of the one from the original chipmakers?
+</Notice>
+```asm
+0000000000401126 <fun>:
+  401126:  b9 00 00 00 00        mov    $0x0,%ecx
+  40112b:  ba 00 00 00 00        mov    $0x0,%edx
+  401130:  eb 0e                 jmp    401140 <fun+0x1a>
+  401132:  8d 54 3a ff           lea    -0x1(%rdx,%rdi,1),%edx
+  401136:  83 c0 01              add    $0x1,%eax
+  401139:  39 f0                 cmp    %esi,%eax
+  40113b:  7c f5                 jl     401132 <fun+0xc>
+  40113d:  83 c1 01              add    $0x1,%ecx
+  401140:  39 f9                 cmp    %edi,%ecx
+  401142:  7d 04                 jge    401148 <fun+0x22>
+  401144:  89 c8                 mov    %ecx,%eax
+  401146:  eb f1                 jmp    401139 <fun+0x13>
+  401148:  8d 42 01              lea    0x1(%rdx),%eax
+  40114b:  c3                    ret
+```
+
+## Step 1: Compute branches
+Easy, just find all branching instructions, and draw an arrow from each instruction to its destination.
+
+You should arrive with something like this (no need to do this neatly, we're not deriving anything from all the connections at once):
+
+![](/images/blog/20260910-assembly-tracing-technique/2.png)
+
+## Step 2: Construct basic blocks
+See how some instructions now have lines connecting to/from them?
+
+Recall that there can be no branching (both entry and exit!) within a basic block; we could therefore construct them by looking at the lines!
+
+* For each instruction with a line **leaving**, this is the **end** of a basic block.
+* For each instruction with a line **entering**, this is the **start** of a basic block.
+* Group the instructions within each basic block together by drawing boxes around them.
+* Label each basic block with a symbol (I'll use A, B, C, ...).
+
+Your assembly should now look like this:
+
+![](/images/blog/20260910-assembly-tracing-technique/3.png)
+
+## Step 3: Connect blocks
+With the blocks and lines connecting them, redraw the graph using only the symbols.
+
+Pay attention to the connections: You'd need to add additional connections if fall-through is possible! For example:
+```
+------------------
+| A Basic Block  |
+| ...            |
+| jg C           |
+------------------
+| B Basic Block  |
+| ...            |
+------------------
+```
+In this case, you'd need to connect A to both C and B. (If A did not branch to C, it will "fall-through" to B.)
+
+![](/images/blog/20260910-assembly-tracing-technique/4.png)
+
+Voila, you'll get a CFG! This graph describes how the program execution flows.
+
+If you're familiar enough, you could start answering the exam questions simply by looking at this & the step 2 basic block list!
+
+If you're still confused, or would like to know some common shapes to recognize, keep reading :)
+
+## Step 4. Identify region of interest
+
+The primary ROI to recognize is loops. On a CFG, loops will look exactly like a loop!
+
+![](/images/blog/20260910-assembly-tracing-technique/5.png)
+
+In our example, we have two loops, and they're nested together:
+1. Loop C -> B
+2. Loop E -> F -> C (Optionally Loop 1) -> D
+
+Now, we need to reconstruct the data flow. In general, you should:
+* Always do nested loops from inner to outer; in our case, do 1 first, then 2.
+* Start from the condition basic block.
+   * That's the block which will "condition" if we should continue looping or not.
+   * It's easily identifiable by checking which block has 2 paths: one path exits and the other continues the loop.
+   * In our case, loop 1's condition block is `C`, and loop 2's condition block is `E`.
+
+Let's start with `C`:
+```
+C:
+  401139:  39 f0                 cmp    %esi,%eax
+  40113b:  7c f5                 jl     401132 <fun+0xc>
+```
+
+We now know the `cmp` + `jl` determine if we continue looping, so we could construct the following pseudo-code:
+```c
+C:
+   while(eax < esi) {
+      B;
+   }
+```
+
+Next, do the same for `B` and construct its pseudo-code:
+```
+B:
+  401132:  8d 54 3a ff           lea    -0x1(%rdx,%rdi,1),%edx
+  401136:  83 c0 01              add    $0x1,%eax
+```
+```c
+B:
+   edx = rdx + rdi - 1;
+   eax++;
+```
+
+## Step 5: Combine substructures
+
+We now have the substructures' data flow reconstructed; it's time to merge them.
+
+Pay close attention to the common registers when combining them. For example, our `B` modifies `eax`, which is checked by `C`.
+
+We could combine `B` and `C` into this:
+```c
+C:
+   for(...; eax < esi; eax++) {
+      edx = rdx + rdi - 1;
+   }
+```
+
+Cool! We're done with the inner loop (loop 1).
+
+## Step 6: GOTO step 4 until finished
+
+The next node to tackle is `E` (outer loop's condition). Follow the same process:
+```
+E:
+  401140:  39 f9                 cmp    %edi,%ecx
+  401142:  7d 04                 jge    401148 <fun+0x22>
+```
+```c
+E:
+   while(ecx < edi) {
+      F;
+      for(...; eax < esi; eax++) {
+         edx = rdx + rdi - 1;
+      }
+      D;
+   }
+```
+
+For `F`:
+```
+F:
+  401144:  89 c8                 mov    %ecx,%eax
+```
+```
+F:
+   eax = ecx;
+```
+Notice how we're assigning `eax`, which is used by the inner loop in `C`. We could rewrite this as the initialization for the inner loop:
+```
+E:
+   while(ecx < edi) {
+      for(eax = ecx; eax < esi; eax++) {
+         edx = rdx + rdi - 1;
+      }
+      D;
+   }
+```
+
+Cool, now `D`:
+```
+D:
+  40113d:  83 c1 01              add    $0x1,%ecx
+```
+This modifies `ecx`, which is the condition in `E`. The outer loop can be expressed as a for loop as well.
+```
+E:
+   for(...; ecx < edi; ecx++) {
+      for(eax = ecx; eax < esi; eax++) {
+         edx = rdx + rdi - 1;
+      }
+   }
+```
+
+Perfect! Finally, do the same for `A` and `G`, you'd get the following code:
+```c
+   edx = 0;
+   for(ecx = 0; ecx < edi; ecx++) {
+      for(eax = ecx; eax < esi; eax++) {
+         edx = rdx + rdi - 1;
+      }
+   }
+   return rdx + 1;
+```
+
+Full data flow reconstruction:
+![](/images/blog/20260910-assembly-tracing-technique/6.png)
+
+Congratulations! you are now a certified human decompiler :)
+
+# Patterns to look out for
+
+Some tips and tricks ;)
+
+1. Be sensitive to increment instructions
+   * Whenever you see `inc XXX` or `add 1,XXX`, there's a high likelihood that it's a for-loop counter increment.
+   * Look for the BB that **follows** the increment. If it is a for loop, it will be followed by a condition block.
+   * You can see this in our example's blocks `D` (increment block) and `E` (condition block).
+2. Recognize `break`
+   * If `break` is used in a loop, it will still form a loop on the CFG, but there might be multiple exits.
+   * ![](/images/blog/20260910-assembly-tracing-technique/7.png)
+   * However, keep in mind that not all uses of `break` necessarily look like this.
+3. Recognize jump tables
+   * If you're analyzing by hand, recognizing jump tables is important. Drawing out the CFG for a jump table can result in a huge graph that is hard to read, so I'd suggest reducing the jump table to a localized "block" first.
+4. What you constructed is not the original code
+   * However, you can be confident that the reconstructed program behaves exactly the same as the original code.
+   * Think of loops: the same CFG could be achieved with `for`, `while`, `do.. while`, or even `goto`.
