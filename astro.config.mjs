@@ -4,16 +4,16 @@ import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 import AutoImport from "astro-auto-import";
-import { defineConfig, fontProviders } from "astro/config";
+import { defineConfig, fontProviders, sharpImageService } from "astro/config";
 import remarkCollapse from "remark-collapse";
 import remarkToc from "remark-toc";
-import sharp from "sharp";
 import config from "./src/config/config.json";
 import theme from "./src/config/theme.json";
 import cloudflare from "@astrojs/cloudflare";
 import sentry from "@sentry/astro";
 
 const sentryAuthToken = process.env.SENTRY_AUTH_TOKEN;
+const isDevCommand = process.argv.includes("dev");
 
 // Parse the theme format: "FontName:wght@400;500;600;700".
 function parseFontString(fontString) {
@@ -52,7 +52,7 @@ export default defineConfig({
   trailingSlash: config.site.trailing_slash ? "always" : "never",
   compressHTML: true,
   session: false,
-  image: { service: sharp() },
+  image: { service: sharpImageService() },
   vite: { plugins: [tailwindcss()] },
   fonts,
 
@@ -98,7 +98,9 @@ export default defineConfig({
     extendDefaultPlugins: true,
   },
 
-  adapter: cloudflare({
-    imageService: "compile",
-  }),
+  adapter: isDevCommand
+    ? undefined
+    : cloudflare({
+        imageService: "compile",
+      }),
 });

@@ -1,6 +1,6 @@
 # Project Architecture
 
-This is an Astro 7 static site using Tailwind CSS 4, content collections, React islands, compile-time image optimization, Cloudflare Workers deployment, and Sentry.
+This is an Astro 7 static site using Tailwind CSS 4, content collections, React islands, compile-time image optimization, Cloudflare Workers deployment, and Sentry. Development uses Astro's Node server and Sharp image service; build and preview retain the Cloudflare adapter.
 
 ## Data Flow
 

@@ -39,7 +39,7 @@ Do not replace these areas wholesale with upstream versions:
 - Configurable share controls
 - Local Google Tag Manager implementation
 - Local content, routes, assets, and navigation
-- `client:load` behavior for the announcement and search modal
+- Browser-only hydration for the announcement and search modal
 - The local Bootstrap-grid Tailwind plugin
 
 ## Future Porting Workflow

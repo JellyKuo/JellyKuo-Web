@@ -173,9 +173,9 @@ const { title, meta_title, description, image, noindex, canonical } =
     </noscript>}
 
     <TwSizeIndicator />
-    <Announcement client:load />
+    <Announcement client:only="react" />
     <Header />
-    <SearchModal client:load />
+    <SearchModal client:only="react" />
     <main class="grow" id="main-content">
       <slot />
     </main>

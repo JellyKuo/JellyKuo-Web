@@ -20,7 +20,7 @@ yarn check
 yarn build
 ```
 
-`yarn dev` watches the theme source, generates the search index, and starts Astro. `yarn build` generates the theme and search data, builds the site, and produces LLM-friendly artifacts.
+`yarn dev` watches the theme source, generates the search index, and starts Astro with its Node/Sharp development pipeline. `yarn build` generates the theme and search data, builds the Cloudflare deployment, and produces LLM-friendly artifacts. Use `yarn build && yarn preview` when validating the generated Worker locally.
 
 ## Content Visibility
 
