@@ -1,4 +1,5 @@
 import mdx from "@astrojs/mdx";
+import { unified } from "@astrojs/markdown-remark";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
@@ -11,11 +12,15 @@ import config from "./src/config/config.json";
 import cloudflare from "@astrojs/cloudflare";
 import sentry from "@sentry/astro";
 
+const sentryAuthToken = process.env.SENTRY_AUTH_TOKEN;
+
 // https://astro.build/config
 export default defineConfig({
   site: config.site.base_url ? config.site.base_url : "http://examplesite.com",
   base: config.site.base_path ? config.site.base_path : "/",
   trailingSlash: config.site.trailing_slash ? "always" : "never",
+  compressHTML: true,
+  session: false,
   image: { service: sharp() },
   vite: { plugins: [tailwindcss()] },
 
@@ -37,17 +42,25 @@ export default defineConfig({
     sentry({
       project: config.sentry.project,
       org: config.sentry.org,
-      authToken: config.sentry.auth_token,
-    })
+      authToken: sentryAuthToken,
+      enabled: { client: true, server: false },
+      sourcemaps: { disable: !sentryAuthToken },
+      telemetry: false,
+    }),
   ],
 
   markdown: {
-    remarkPlugins: [remarkToc, [remarkCollapse, { test: "Table of contents" }]],
+    processor: unified({
+      remarkPlugins: [
+        remarkToc,
+        [remarkCollapse, { test: "Table of contents" }],
+      ],
+    }),
     shikiConfig: { theme: "one-dark-pro", wrap: true },
     extendDefaultPlugins: true,
   },
 
   adapter: cloudflare({
-    imageService: 'compile'
+    imageService: "compile",
   }),
 });

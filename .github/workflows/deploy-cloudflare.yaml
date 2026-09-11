@@ -13,13 +13,13 @@ jobs:
     environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}
     steps:
       - name: Git checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           lfs: true
       - name: Enable Corepack
         run: corepack enable
       - name: Use Node.js 22 and Yarn
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '22'
           cache: 'yarn'
@@ -28,7 +28,6 @@ jobs:
           jq '.site.environment = "${{ vars.ENVIRONMENT }}" | 
           .site.base_url = "${{ vars.BASE_URL }}" | 
           .site.base_path = "${{ vars.BASE_PATH }}" | 
-          .sentry.auth_token = "${{ secrets.SENTRY_AUTH_TOKEN }}" | 
           .sentry.dsn = "${{ secrets.SENTRY_DSN }}" | 
           .sentry.project = "${{ vars.SENTRY_PROJECT }}" | 
           .sentry.org = "${{ vars.SENTRY_ORG }}" | 
@@ -40,35 +39,36 @@ jobs:
           mv temp.json src/config/config.json && \
           cat src/config/config.json
       - name: Yarn install
-        run: yarn install
+        run: yarn install --immutable
       - name: Build site
         run: yarn build
-      - name: Copy Wrangler config
-        run: cp wrangler.jsonc dist/wrangler.jsonc
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+      - name: Upload site artifact
+        uses: actions/upload-artifact@v7
         with:
-          name: dist
-          include-hidden-files: true
+          name: site
           path: dist/
-  
+          include-hidden-files: true
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
     environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}
     steps:
-      - name: Download Artifact
-        uses: actions/download-artifact@v4
+      - name: Download site artifact
+        uses: actions/download-artifact@v8
         with:
-          name: dist
+          name: site
           path: dist/
-      - name: Move Wrangler config
-        run: mv dist/wrangler.jsonc .
       - name: Deploy Worker
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/wrangler-action@v4
         with:
-          wranglerVersion: "4.51.0"
+          wranglerVersion: "4.131.0"
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: |
-            deploy --config wrangler.jsonc --name "${{ vars.CLOUDFLARE_WORKER_NAME }}" --domain "${{ vars.CLOUDFLARE_WORKER_DOMAIN }}"
+          command: >-
+            deploy
+            --config dist/client/wrangler.json
+            --name "${{ vars.CLOUDFLARE_WORKER_NAME }}"
+            --domain "${{ vars.CLOUDFLARE_WORKER_DOMAIN }}"
