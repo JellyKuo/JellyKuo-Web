@@ -26,27 +26,23 @@ const { id, images } = Astro.props;
 ---
 
 <div id={id} class="gallery-container">
-  {
-    images.map(async (img) => {
-      if (!img.lgSize) {
-        const image = await getImageImport(img.src);
-        if (image) {
-          img.lgSize = `${image.width}-${image.height}`;
-        }
+  {images.map(async (img) => {
+    if (!img.lgSize) {
+      const image = await getImageImport(img.src);
+      if (image) {
+        img.lgSize = `${image.width}-${image.height}`;
       }
-      return (
-        // The anchor tag is the item that gets tiled in the Masonry layout
-        <a href={img.src} data-lg-size={img.lgSize} class="gallery-item">
-          <ImageMod
-            src={img.src}
-            alt={img.alt}
-            width={img.width}
-            height={img.height}
-          />
-        </a>
-      );
-    })
-  }
+    }
+    // The anchor tag is the item that gets tiled in the Masonry layout
+    return <a href={img.src} data-lg-size={img.lgSize} class="gallery-item">
+      <ImageMod
+        src={img.src}
+        alt={img.alt}
+        width={img.width}
+        height={img.height}
+      />
+    </a>;
+  })}
 </div>
 
 <style>
@@ -85,7 +81,6 @@ const { id, images } = Astro.props;
   .gallery-item:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   }
-
 </style>
 
 <script>

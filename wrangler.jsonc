@@ -1,15 +1,15 @@
 {
-	"main": "dist/_worker.js/index.js",
-  "compatibility_date": "2025-11-19",
-  "compatibility_flags": [
-    "nodejs_compat",
-    "global_fetch_strictly_public"
-  ],
-	"assets": {
-		"binding": "ASSETS",
-		"directory": "./dist"
-	},
-	"observability": {
+  "main": "./sentry.server.config.js",
+  "compatibility_date": "2026-09-10",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "binding": "ASSETS",
+    "directory": "./dist"
+  },
+  "observability": {
     "enabled": true
+  },
+  "version_metadata": {
+    "binding": "CF_VERSION_METADATA"
   }
 }
