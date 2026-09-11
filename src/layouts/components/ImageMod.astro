@@ -25,16 +25,22 @@ const image = await getImageImport(src);
   console.error(`\x1b[31mImage not found - ${src}.\x1b[0m Make sure the image is in the /public/images folder.`);
 
 const maxDimension = 640;
-if(!width || !height) {
-  // Calculate ideal width and height if not provided.
-  if(image?.width && image?.height) {
-    // Scale down large images for better performance
-    if(image.width > maxDimension || image.height > maxDimension) {
-      const scaleRatio = Math.max(image.width / maxDimension, image.height / maxDimension);
+if (image?.width && image?.height) {
+  const aspectRatio = image.width / image.height;
+
+  if (width && !height) {
+    height = Math.round(width / aspectRatio);
+  } else if (height && !width) {
+    width = Math.round(height * aspectRatio);
+  } else if (!width && !height) {
+    if (image.width > maxDimension || image.height > maxDimension) {
+      const scaleRatio = Math.max(
+        image.width / maxDimension,
+        image.height / maxDimension,
+      );
       width = Math.round(image.width / scaleRatio);
       height = Math.round(image.height / scaleRatio);
-    }
-    else {
+    } else {
       width = image.width;
       height = image.height;
     }
